@@ -53,7 +53,7 @@ public class WordCountInteractiveQueriesExample {
       Properties config = new Properties();
       config.load(input);
 
-      return StreamsConfiguration.createStreamConfig(config);
+      return config;
     } catch (IOException ex) {
       ex.printStackTrace();
       throw ex;

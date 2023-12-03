@@ -9,7 +9,7 @@
     <version>0.1</version>
 
     <properties>
-        <finalName>java-producer</finalName>
+        <finalName>wordcount-producer</finalName>
         <jackson.version>2.16.0</jackson.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -95,7 +95,7 @@
                   </descriptorRefs>
                   <archive>
                     <manifest>
-                      <mainClass>org.github ogomezso kstreams.App</mainClass>
+                      <mainClass>org.github.ogomezso.kstreams.App</mainClass>
                     </manifest>
                   </archive>
                 </configuration>
