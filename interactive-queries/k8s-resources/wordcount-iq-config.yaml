@@ -1,0 +1,22 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: interactive-queries
+  name: wordcount-iq-config
+  annotations:
+    reloader.stakater.com/match: "true"
+data:
+  config.properties: |-
+    host=$PODNAME.34.89.8.229.nip.io
+    port=80
+    topic=text-lines-topic
+    bootstrap.servers=bootstrap.35.246.125.225.nip.io:443
+    security.protocol=SASL_SSL
+    ssl.truststore.location=/ssl-certs/truststore.jks
+    ssl.truststore.password=password
+    sasl.mechanism=PLAIN
+    sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="kraft" password="kraft-secret";
+    key.serializer=org.apache.kafka.common.serialization.StringSerializer
+    value.serializer=org.apache.kafka.common.serialization.StringSerializer
+    application.id=wordcount-iq-example
+    client.id=wordcount-iq-example-client

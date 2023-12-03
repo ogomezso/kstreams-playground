@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: wordcount-producer
+  name: wordcount-producer
+  namespace: interactive-queries
+  annotations:
+    configmap.reloader.stakater.com/reload: "wordcount-producer-config"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordcount-producer
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: wordcount-producer
+    spec:
+      containers:
+        - name: wordcount-producer-producer
+          image: ogomezso/wordcount-producer:0.0.1
+          resources: {}
+          volumeMounts:
+          - name: app-config-volume
+            mountPath: /config
+          - name: ssl-certs
+            mountPath: /ssl-certs
+      volumes:
+        - name: app-config-volume
+          configMap:
+            name: wordcount-producer-config
+        - name: ssl-certs
+          secret:
+            secretName: truststore
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: wordcount-producer
+  name: wordcount-producer
+  namespace: interactive-queries
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: wordcount-producer
+status:
+  loadBalancer: {}

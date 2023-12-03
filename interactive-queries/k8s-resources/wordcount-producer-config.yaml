@@ -1,0 +1,19 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: interactive-queries
+  name: wordcount-producer-config
+  annotations:
+    reloader.stakater.com/match: "true"
+data:
+  config.properties: |-
+    client.id=wordcount-producer
+    topic=text-lines-topic
+    key.serializer=org.apache.kafka.common.serialization.StringSerializer
+    value.serializer=org.apache.kafka.common.serialization.StringSerializer
+    bootstrap.servers=bootstrap.35.246.125.225.nip.io:443
+    security.protocol=SASL_SSL
+    sasl.mechanism=PLAIN
+    sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="kraft" password="kraft-secret";
+    ssl.truststore.location=/ssl-certs/truststore.jks
+    ssl.truststore.password=password

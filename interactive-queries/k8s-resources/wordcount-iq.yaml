@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordcount-iq
+  namespace: interactive-queries
+  labels:
+    app: wordcount-iq
+spec:
+  clusterIP: None
+  selector:
+    app: wordcount-iq
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    service-per-pod-label: "statefulset.kubernetes.io/pod-name"
+    service-per-pod-ports: "9080:9080"
+  name: wordcount-iq
+  namespace: interactive-queries
+spec:
+  serviceName: wordcount-iq
+  replicas: 2
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      app: wordcount-iq
+  template:
+    metadata:
+      labels:
+        app: wordcount-iq
+    spec:
+      initContainers:
+      - args:
+        - sh
+        - -c
+        - cat /config.properties | envsubst > /config/config.properties | cat /config/config.properties
+        image: bhgedigital/envsubst
+        name: envsubst
+        env:
+          - name: PODNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+        volumeMounts:
+        - mountPath: /config
+          name: data-volume
+        - mountPath: /config.properties
+          subPath: config.properties
+          name: app-config
+      containers:
+      - name: wordcount-iq
+        image: ogomezso/wordcount-iq:0.0.2  
+        env:
+          - name: PODNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+        volumeMounts:
+        - name: rocksdb
+          mountPath: /rocksdb
+        - name: data-volume
+          mountPath: /config
+        - name: ssl-certs
+          mountPath: /ssl-certs
+      volumes:
+        - name: data-volume
+          emptyDir: {}
+        - name: app-config
+          configMap:
+            name: wordcount-iq-config 
+        - name: ssl-certs
+          secret:
+            secretName: truststore
+  volumeClaimTemplates:
+  - metadata:
+      name: rocksdb
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: cflt-sc
+      resources:
+        requests:
+          storage: 1Gi

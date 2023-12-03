@@ -1,0 +1,39 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wordcount-iq-ingress
+  namespace: interactive-queries
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: wordcount-iq.34.89.8.229.nip.io
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: wordcount-iq
+                port:
+                  number: 9080
+    - host: wordcount-iq-0.34.89.8.229.nip.io
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: wordcount-iq-0
+                port:
+                  number: 9080
+    - host: wordcount-iq-1.34.89.8.229.nip.io
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: wordcount-iq-1
+                port:
+                  number: 9080
