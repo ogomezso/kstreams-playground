@@ -7,8 +7,8 @@ metadata:
     reloader.stakater.com/match: "true"
 data:
   config.properties: |-
-    host=$PODNAME.34.89.8.229.nip.io
-    port=80
+    host=$PODNAME
+    port=9080
     topic=text-lines-topic
     bootstrap.servers=bootstrap.35.246.125.225.nip.io:443
     security.protocol=SASL_SSL
@@ -18,5 +18,6 @@ data:
     sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="kraft" password="kraft-secret";
     key.serializer=org.apache.kafka.common.serialization.StringSerializer
     value.serializer=org.apache.kafka.common.serialization.StringSerializer
+    application.server=$PODNAME.34.89.8.229.nip.io:80
     application.id=wordcount-iq-example
     client.id=wordcount-iq-example-client

@@ -16,11 +16,12 @@ metadata:
   annotations:
     service-per-pod-label: "statefulset.kubernetes.io/pod-name"
     service-per-pod-ports: "9080:9080"
+    app: wordcount-iq
   name: wordcount-iq
   namespace: interactive-queries
 spec:
   serviceName: wordcount-iq
-  replicas: 2
+  replicas: 1
   podManagementPolicy: Parallel
   selector:
     matchLabels:
@@ -48,8 +49,12 @@ spec:
         - mountPath: /config.properties
           subPath: config.properties
           name: app-config
+      # hostAliases:
+      # - ip: 0.0.0.0
+      #   hostnames:
+      #   - wordcount-iq-0.34.89.8.229.nip.io
       containers:
-      - name: wordcount-iq
+      - name: wodcount-iq
         image: ogomezso/wordcount-iq:0.0.2  
         env:
           - name: PODNAME

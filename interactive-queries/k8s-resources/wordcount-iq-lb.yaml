@@ -7,11 +7,8 @@ metadata:
     app: wordcount-iq
 spec:
   ports:
-    - name: external
-      port: 9080
-      protocol: TCP
-      targetPort: 9080
+  - name: external
+    port: 9080
+  clusterIP: None
   selector:
     app: wordcount-iq
-  sessionAffinity: None
-  type: ClusterIP
