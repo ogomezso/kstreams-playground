@@ -85,7 +85,7 @@ public class WordCountInteractiveQueriesExample {
 
     groupedByWord.windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(1)))
         .count(Materialized.<String, Long, WindowStore<Bytes, byte[]>>as("windowed-word-count")
-            .withValueSerde(Serdes.Long()));
+            .withValueSerde(Serdes.Long())).toStream().to(null);;
 
     return new KafkaStreams(builder.build(), streamsConfiguration);
   }

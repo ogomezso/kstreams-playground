@@ -21,7 +21,7 @@ metadata:
   namespace: interactive-queries
 spec:
   serviceName: wordcount-iq
-  replicas: 1
+  replicas: 3
   podManagementPolicy: Parallel
   selector:
     matchLabels:
@@ -49,10 +49,7 @@ spec:
         - mountPath: /config.properties
           subPath: config.properties
           name: app-config
-      # hostAliases:
-      # - ip: 0.0.0.0
-      #   hostnames:
-      #   - wordcount-iq-0.34.89.8.229.nip.io
+
       containers:
       - name: wodcount-iq
         image: ogomezso/wordcount-iq:0.0.2  
